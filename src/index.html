@@ -1,0 +1,104 @@
+<title>Windowsill Cactus</title>
+<meta name="description" content="Raise a baby cactus on a realistic windowsill in real time, with the view outside matched to your real weather.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Gluten:wght@500..800&family=Nunito:wght@500;600;700;800;900&display=swap">
+<style>/*__CSS__*/</style>
+
+<div id="app">
+  <main id="scene" aria-label="A cactus on a windowsill">
+    <div id="outside" aria-hidden="true">
+      <div class="photo-wrap">
+        <img id="photoA" class="photo" alt="">
+        <img id="photoB" class="photo" alt="">
+        <img id="photoFlash" class="photo flash" alt="">
+      </div>
+      <div id="skyGrade"></div>
+    </div>
+    <canvas id="fxOut" aria-hidden="true"></canvas>
+    <div id="interior">
+      <canvas id="win" aria-hidden="true"></canvas>
+      <canvas id="fxGlass" aria-hidden="true"></canvas>
+      <div id="glassReflect" aria-hidden="true"></div>
+      <div id="curtain" aria-hidden="true"><i class="panel l"></i><i class="panel r"></i></div>
+      <canvas id="room" aria-hidden="true"></canvas>
+      <canvas id="patch" aria-hidden="true"></canvas>
+      <div id="plantShadow" aria-hidden="true"></div>
+      <div id="plant" role="button" tabindex="0" aria-label="Your cactus. Tap to say hi."></div>
+      <div id="growLamp" aria-hidden="true">
+        <i class="cone"></i>
+        <svg viewBox="0 0 100 100"><path d="M92 4 V40 Q92 50 80 52 L62 54" stroke="#3A3F47" stroke-width="7" fill="none" stroke-linecap="round"/><rect x="84" y="0" width="16" height="14" rx="3" fill="#2B3036"/>
+          <path d="M18 50 L58 34 Q66 32 68 40 L70 48 Q71 55 64 57 L24 66 Q16 67 15 60 Z" fill="#5C6470" stroke="#1D2127" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M22 62 L66 52" stroke="#FAD2F2" stroke-width="5" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+    <div id="roomLight" aria-hidden="true"></div>
+    <canvas id="fxRoom" aria-hidden="true"></canvas>
+    <div id="flashRoom" aria-hidden="true"></div>
+    <div id="sashHit" role="button" tabindex="-1" aria-label="Window sash: drag up to open, down to close" title="Drag to open or close the window"></div>
+    <div id="bubble" hidden></div>
+    <div id="meterPop" hidden></div>
+  </main>
+
+  <header id="hud">
+    <section class="card plant-card" aria-label="Your cactus">
+      <div class="day"><span>Day</span><b id="dayNum">1</b></div>
+      <div class="pc-main">
+        <h1 id="plantName">Goldie</h1>
+        <p class="latin" id="plantSpecies">Echinocactus grusonii</p>
+        <div class="stage"><span id="stageName">Seedling</span><span class="sdots" id="stageDots"></span><span class="height" id="plantHeight"></span></div>
+      </div>
+    </section>
+    <div class="hud-right">
+      <button class="card weather-chip" id="weatherChip" type="button" aria-label="Weather: open weather settings">
+        <span class="wx-icon" id="wxIcon"></span>
+        <span class="wx-text">
+          <span class="wx-main"><b id="wxTemp">—</b> <span id="wxCond">Partly cloudy</span></span>
+          <span class="wx-sub"><span id="wxPlace">Your window</span> · <span id="wxSrc">Set by you</span></span>
+        </span>
+      </button>
+      <div class="hud-row">
+        <div class="card clock"><b id="clockTime"></b><span id="clockSun"></span></div>
+        <button class="card icon-btn" id="btnHelp" type="button" aria-label="How to play" title="How to play">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="#FFE9A8" stroke="#2C3A33" stroke-width="1.8"/><path d="M9.3 9.4 A2.8 2.8 0 1 1 13 12 Q12 12.6 12 14" stroke="#2C3A33" stroke-width="2.2" fill="none" stroke-linecap="round"/><circle cx="12" cy="17.2" r="1.3" fill="#2C3A33"/></svg>
+        </button>
+        <button class="card icon-btn" id="btnJournal" type="button" aria-label="Journal" title="Journal">
+          <svg viewBox="0 0 24 24"><path d="M4 5 Q4 3 6 3 H19 V19 H6 Q4 19 4 21 Z" fill="#E4834F" stroke="#6A2E14" stroke-width="1.6"/><path d="M4 21 Q4 19 6 19 H19 V21 Z" fill="#FBF3E4" stroke="#6A2E14" stroke-width="1.4"/><path d="M8 7 H15 M8 10 H13" stroke="#FBF3E4" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <button class="card icon-btn" id="btnSettings" type="button" aria-label="Settings" title="Settings">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="#FFFBF1" stroke="#2C3A33" stroke-width="1.6"/><path d="M12 2.5 l1.6 2.3 2.7-.7.6 2.7 2.6 1-.9 2.6 1.9 2-1.9 2 .9 2.6-2.6 1-.6 2.7-2.7-.7L12 21.5l-1.6-2.3-2.7.7-.6-2.7-2.6-1 .9-2.6-1.9-2 1.9-2-.9-2.6 2.6-1 .6-2.7 2.7.7Z" fill="none" stroke="#2C3A33" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="card meters" id="meters" aria-label="How your cactus is doing">
+    <div class="meter" id="mSoil"><span class="mi"><svg viewBox="0 0 24 24"><path d="M12 3 C16 9 18 12 18 15 A6 6 0 0 1 6 15 C6 12 8 9 12 3Z" fill="#6BB8EE" stroke="#1F5F8B" stroke-width="1.8"/></svg></span><span class="ml">Soil</span><span class="track"><i class="fill"></i></span><span class="val"></span></div>
+    <div class="meter" id="mLight"><span class="mi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="#F4B63A" stroke="#7A5A0C" stroke-width="1.6"/><g stroke="#E09A1A" stroke-width="2" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></g></svg></span><span class="ml">Light today</span><span class="track"><i class="fill"></i></span><span class="val"></span></div>
+    <div class="meter" id="mHealth"><span class="mi"><svg viewBox="0 0 24 24"><path d="M12 20 C6 16 3 13 3 9 A4.5 4.5 0 0 1 12 7 A4.5 4.5 0 0 1 21 9 C21 13 18 16 12 20Z" fill="#F26D7D" stroke="#8E2F3B" stroke-width="1.8"/></svg></span><span class="ml">Health</span><span class="track"><i class="fill"></i></span><span class="val"></span></div>
+    <div class="meter" id="mGrowth"><span class="mi"><svg viewBox="0 0 24 24"><path d="M12 21 V11" stroke="#2F6B34" stroke-width="2" stroke-linecap="round"/><path d="M12 13 C12 8 8 6 4 7 C4 11 7 13 12 13Z" fill="#7BC96F" stroke="#2F6B34" stroke-width="1.5"/><path d="M12 11 C12 6 16 4 20 5 C20 9 17 11 12 11Z" fill="#9BD67C" stroke="#2F6B34" stroke-width="1.5"/></svg></span><span class="ml">Growth</span><span class="track"><i class="fill"></i></span><span class="val"></span></div>
+    <button class="need" id="needBtn" type="button"><span class="need-text" id="needText"></span><span class="act" id="needAct">Water</span></button>
+  </section>
+
+  <nav id="caddy" aria-label="Tools">
+    <div class="caddy-box">
+      <div class="tools"></div>
+      <span class="caddy-div" aria-hidden="true"></span>
+      <button class="tool" id="btnWindow" type="button" aria-label="Open or close the window (O)">
+        <span class="tool-icon"><svg viewBox="0 0 64 64"><rect x="10" y="6" width="44" height="52" rx="3" fill="#FBF8F1" stroke="#2C3A33" stroke-width="3"/><rect x="15" y="11" width="34" height="18" fill="#9FD3F2" stroke="#2C3A33" stroke-width="2"/><rect x="15" y="33" width="34" height="20" fill="#9FD3F2" stroke="#2C3A33" stroke-width="2"/><path d="M32 24 L32 14 M27 19 L32 13 L37 19" stroke="#2C3A33" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span>
+        <span class="tool-name">Open</span><kbd>O</kbd>
+      </button>
+      <button class="tool" id="btnCurtain" type="button" aria-label="Sheer curtain (U)">
+        <span class="tool-icon"><svg viewBox="0 0 64 64"><path d="M8 8 H56" stroke="#8A6A33" stroke-width="4" stroke-linecap="round"/><path d="M12 10 Q16 34 10 58 L30 58 Q24 34 30 10 Z" fill="#FFFFFF" stroke="#8E8373" stroke-width="2.4"/><path d="M34 10 Q40 34 34 58 L54 58 Q48 34 54 10 Z" fill="#FFFFFF" stroke="#8E8373" stroke-width="2.4"/><path d="M18 14 Q21 34 16 54 M42 14 Q45 34 40 54" stroke="#D9D2C3" stroke-width="2" fill="none"/></svg></span>
+        <span class="tool-name">Curtain</span><kbd>U</kbd>
+      </button>
+    </div>
+  </nav>
+
+  <div id="toasts" aria-live="polite"></div>
+  <div id="hint" aria-hidden="true"></div>
+  <button id="creditBtn" class="credit" type="button"></button>
+  <div id="modal" hidden><div class="sheet" role="dialog" aria-modal="true"></div></div>
+</div>
+
+<script>/*__JS__*/</script>
